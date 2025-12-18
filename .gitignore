@@ -1,0 +1,15 @@
+# Ignore Kernel Module Build Artifacts
+*.ko
+*.mod.*
+*.mod
+*.o
+modules.order
+Module.symvers
+.cache/
+.tmp_versions/
+
+# Ignore Hidden Build Metadata Files
+.*.cmd
+.cache/
+.tmp_versions/
+.module-common.o
