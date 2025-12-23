@@ -9,8 +9,8 @@
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("gesinski");
-MODULE_DESCRIPTION("A simple firewall module");
-MODULE_VERSION("1.0");
+MODULE_DESCRIPTION("Simple firewall module");
+MODULE_VERSION("1.1");
 
 static struct nf_hook_ops *nfho = NULL;
 
@@ -29,21 +29,20 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 		}
 	}
 	else if (iph->protocol == IPPROTO_TCP) {
-		return NF_ACCEPT;
+		return NF_DROP;
 	}
 	
-	return NF_DROP;
+	return NF_ACCEPT;
 }
 
 static int __init firewall_init(void)
 {
 	nfho = (struct nf_hook_ops*)kcalloc(1, sizeof(struct nf_hook_ops), GFP_KERNEL);
 	
-	/* Initialize netfilter hook */
-	nfho->hook 	= (nf_hookfn*)hfunc;		/* hook function */
-	nfho->hooknum 	= NF_INET_PRE_ROUTING;		/* received packets */
-	nfho->pf 	= PF_INET;			/* IPv4 */
-	nfho->priority 	= NF_IP_PRI_FIRST;		/* max hook priority */
+	nfho->hook 	= (nf_hookfn*)hfunc;		
+	nfho->hooknum 	= NF_INET_PRE_ROUTING;		
+	nfho->pf 	= PF_INET;			
+	nfho->priority 	= NF_IP_PRI_FIRST;		
 	
 	nf_register_net_hook(&init_net, nfho);
     return 0;
